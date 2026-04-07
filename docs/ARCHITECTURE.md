@@ -15,7 +15,7 @@ Selliberation Admin is a **Single Page Application (SPA)** built with React + Vi
 Selliberation-Admin/
 ├── src/
 │   ├── components/         # Layout shells (AdminLayout)
-│   ├── context/            # Global state (AuthContext)
+│   ├── context/            # Global state (AuthContext, ToastContext)
 │   ├── pages/              # One file per route
 │   ├── types/              # Shared TypeScript interfaces
 │   ├── App.tsx             # Router entry + route guards
@@ -31,7 +31,7 @@ Selliberation-Admin/
 ├── tsconfig.app.json
 ├── tsconfig.node.json
 ├── eslint.config.js
-└── vercel.json             # Vercel SPA rewrite rule
+└── vercel.json             # Vercel config: framework, outputDir, installCommand, SPA rewrite
 ```
 
 ---
@@ -133,9 +133,14 @@ Recommended API structure:
 ## Deployment
 
 **Vercel (recommended):**
-1. Push `Selliberation-Admin` to a separate GitHub repo
-2. Import into Vercel
-3. Set root directory to project root
-4. `vercel.json` handles SPA routing: all URLs → `/index.html`
+1. Push `Selliberation-Admin` to a separate GitHub repo (do NOT commit `node_modules`)
+2. Import into Vercel → New Project → Import repo
+3. Vercel auto-detects Vite via `vercel.json` (`"framework": "vite"`)
+4. `vercel.json` sets `installCommand: "npm install --include=dev"` — required so devDependencies (vite, tsc) install even under `NODE_ENV=production`
+5. `vercel.json` rewrites all paths to `/index.html` for SPA routing
+
+**Why `--include=dev` matters:** Vercel builds with `NODE_ENV=production`, which causes plain `npm install` to skip devDependencies. Without this flag, `vite` and `tsc` won't be installed → build exits with code 126.
+
+**Why `node_modules` must not be in git:** Windows-built binaries (`.exe`, platform-specific `.node` files) cannot execute on Vercel's Linux environment → exit 126. The `.gitignore` already excludes `node_modules/`.
 
 **Custom domain:** Set `admin.selliberation.com` in Vercel settings.

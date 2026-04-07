@@ -19,9 +19,10 @@ This file gives Claude Code full context for working in this repository.
 | Routing | React Router DOM v7 |
 | Styling | Tailwind CSS v4 (`@tailwindcss/vite` plugin — no tailwind.config.js) |
 | Icons | Lucide React |
+| Charts | Recharts (AreaChart, BarChart, LineChart, PieChart) |
 | State | React Context API (no Redux) |
 | Fonts | Plus Jakarta Sans (headings), Inter (body) — loaded from Google Fonts |
-| Deployment | Vercel (`vercel.json` with SPA rewrite) |
+| Deployment | Vercel (`vercel.json` — framework: vite, installCommand: npm install --include=dev) |
 
 ---
 
@@ -32,14 +33,17 @@ src/
 ├── components/
 │   └── AdminLayout.tsx   # Sidebar + header shell with <Outlet>
 ├── context/
-│   └── AuthContext.tsx   # Admin-only auth (localStorage: selliberation_admin_session)
+│   ├── AuthContext.tsx   # Admin-only auth (localStorage: selliberation_admin_session)
+│   └── ToastContext.tsx  # Toast notification context
 ├── pages/
 │   ├── Login.tsx         # Admin login page (route: /login)
-│   ├── Dashboard.tsx     # Overview stats (route: /)
+│   ├── Dashboard.tsx     # Overview stats + recharts (route: /)
 │   ├── Users.tsx         # User management (route: /users)
 │   ├── Courses.tsx       # Course + module management (route: /courses)
 │   ├── Commissions.tsx   # Commission tracking (route: /commissions)
 │   ├── Withdrawals.tsx   # Withdrawal approval queue (route: /withdrawals)
+│   ├── Analytics.tsx     # Charts & KPIs — recharts (route: /analytics)
+│   ├── Announcements.tsx # Platform announcements (route: /announcements)
 │   └── Settings.tsx      # Platform config: Paystack, bank, commissions (route: /settings)
 ├── types/
 │   └── index.ts          # AdminUser, User, Course, Commission, Withdrawal, PlatformSettings, etc.
@@ -58,6 +62,8 @@ src/
 - `/courses` — Protected: Course management
 - `/commissions` — Protected: Commission ledger
 - `/withdrawals` — Protected: Withdrawal approval
+- `/analytics` — Protected: Charts & KPIs
+- `/announcements` — Protected: Platform announcements
 - `/settings` — Protected: Platform settings
 - `*` — Redirects to `/`
 
@@ -129,6 +135,8 @@ Card background:     #FFFFFF
 | **Courses** | Tab view (courses / all modules), add/edit/delete courses, collapsible module manager |
 | **Commissions** | 4 summary cards, filter tabs (all/pending/withdrawable/withdrawn), search, export CSV button |
 | **Withdrawals** | 3 stat cards (pending/approved/rejected), filter tabs, approve/reject actions, reject reason modal |
+| **Analytics** | KPI cards, revenue/user LineChart, conversion AreaChart, commission BarChart, top referrers table |
+| **Announcements** | Platform-wide announcements management |
 | **Settings** | 5 tabs: General, Paystack, Bank Account, Commissions (with live calc), Notifications (toggles) |
 
 ---
@@ -150,11 +158,14 @@ npm run preview  # Preview production build
 1. **Inline styles for brand colors** — Use `style={{ color: '#F5820A' }}` for precise brand colors; Tailwind doesn't know our custom values.
 2. **No Tailwind config** — Tailwind CSS v4 via `@tailwindcss/vite`; no `tailwind.config.js` needed.
 3. **TypeScript strict** — All types in `src/types/index.ts`. No `any`.
-4. **Context-only state** — No Redux. Keep global state to auth only.
+4. **Context-only state** — No Redux. Keep global state to auth + toasts only.
 5. **Mock data** — All pages use local state with hardcoded arrays. Replace with real API calls when backend is ready.
 6. **localStorage key** — `selliberation_platform_settings` for Settings page persistence.
 7. **Lucide icons** — Standard sizes: 16, 17, 18, 20, 24px.
 8. **Confirm dialogs** — Destructive actions (ban, delete, cancel) use `window.confirm()` for now. Replace with proper modal confirmation in production.
+9. **Recharts formatters** — Never type `formatter` callbacks as `(val: number)`. Recharts passes `ValueType | undefined`. Use `(val) => ...` and cast with `Number(val)` when calling numeric methods.
+10. **node_modules must NOT be committed** — `.gitignore` excludes `node_modules/`. Committing it causes Windows binary incompatibility on Vercel (exit 126).
+11. **Vercel config** — `vercel.json` sets `installCommand: "npm install --include=dev"` to ensure devDependencies (vite, tsc) are installed even when `NODE_ENV=production`.
 
 ---
 
@@ -170,7 +181,8 @@ The `../Selliberation` app has admin pages at `/admin/*` that mirror this projec
 - [ ] Replace all hardcoded data with real API calls
 - [ ] Add pagination to Users, Commissions, Withdrawals tables
 - [ ] Add date range filters to Commissions and Withdrawals
-- [ ] Add analytics charts to Dashboard (recharts or chart.js)
+- [x] Add analytics charts to Dashboard (recharts — AreaChart, PieChart, BarChart)
+- [x] Add Analytics page with KPI cards + revenue/user/conversion/commission charts
 - [ ] Add real CSV export for Commissions
 - [ ] Add submodule and video management to Courses page
 - [ ] Role-based UI differences between `admin` and `superadmin`

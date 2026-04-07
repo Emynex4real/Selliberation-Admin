@@ -194,15 +194,50 @@ Add a loading skeleton state and error boundary when moving to real API calls.
 
 ## Deploying to Vercel
 
-1. Push `Selliberation-Admin` to a GitHub repo
+1. Push `Selliberation-Admin` to a GitHub repo — **never commit `node_modules`**
 2. Go to vercel.com → New Project → Import repo
-3. Framework: Vite (auto-detected)
-4. Build command: `npm run build`
-5. Output directory: `dist`
-6. Add environment variables if needed
-7. Add domain `admin.selliberation.com` in Vercel DNS settings
+3. Vercel auto-detects Vite via `vercel.json`
+4. No extra settings needed — `vercel.json` handles everything:
+   - `"framework": "vite"` — framework detection
+   - `"outputDirectory": "dist"` — build output
+   - `"installCommand": "npm install --include=dev"` — installs devDeps on Linux
+   - `"rewrites"` — SPA routing (all paths → `/index.html`)
+5. Add domain `admin.selliberation.com` in Vercel DNS settings
 
-The `vercel.json` already handles SPA routing (all paths → `/index.html`).
+**Common Vercel build failure (exit 126):** Caused by either:
+- `node_modules` committed to git (Windows binaries fail on Linux) — fix: `git rm -r --cached node_modules`
+- devDependencies skipped due to `NODE_ENV=production` — fix: `installCommand: "npm install --include=dev"` in `vercel.json`
+
+---
+
+## Using Recharts
+
+All charts use `ResponsiveContainer` for fluid width. Import from `recharts`.
+
+```tsx
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+
+<ResponsiveContainer width="100%" height={250}>
+  <AreaChart data={data} margin={{ top: 5, right: 5, left: 0, bottom: 0 }}>
+    <defs>
+      <linearGradient id="grad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="5%" stopColor="#F5820A" stopOpacity={0.15} />
+        <stop offset="95%" stopColor="#F5820A" stopOpacity={0} />
+      </linearGradient>
+    </defs>
+    <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" />
+    <XAxis dataKey="month" tick={{ fontSize: 11, fill: '#9ca3af' }} axisLine={false} tickLine={false} />
+    <YAxis tick={{ fontSize: 10, fill: '#9ca3af' }} axisLine={false} tickLine={false} width={50} />
+    <Tooltip
+      formatter={(val) => [`₦${Number(val).toLocaleString()}`, 'Revenue']}
+      contentStyle={{ borderRadius: 10, border: '1px solid #e5e7eb', fontSize: 12 }}
+    />
+    <Area type="monotone" dataKey="revenue" stroke="#F5820A" strokeWidth={2.5} fill="url(#grad)" />
+  </AreaChart>
+</ResponsiveContainer>
+```
+
+**Critical:** Never type `formatter` callbacks as `(val: number)`. Recharts passes `ValueType | undefined`. Always use `(val)` and cast: `Number(val).toLocaleString()`.
 
 ---
 

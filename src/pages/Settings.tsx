@@ -42,7 +42,7 @@ export default function Settings() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="text-2xl font-bold text-gray-900" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Platform Settings</h1>
           <p className="text-gray-500 text-sm">Configure your platform settings</p>
@@ -62,15 +62,15 @@ export default function Settings() {
         </div>
       )}
 
-      <div className="flex gap-6">
-        {/* Sidebar */}
-        <div className="w-56 flex-shrink-0">
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-2">
+      <div className="flex flex-col md:flex-row gap-6">
+        {/* Tabs — horizontal scroll on mobile, sidebar on desktop */}
+        <div className="md:w-56 md:shrink-0">
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-2 flex md:flex-col gap-1 overflow-x-auto">
             {tabs.map(tab => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-colors text-sm ${
+                className={`flex items-center gap-2 md:gap-3 px-3 md:px-4 py-2.5 md:py-3 rounded-xl text-left transition-colors text-sm whitespace-nowrap ${
                   activeTab === tab.id ? 'font-medium' : 'text-gray-600 hover:bg-gray-50'
                 }`}
                 style={activeTab === tab.id ? { background: 'rgba(245,130,10,0.08)', color: '#F5820A' } : {}}
@@ -83,7 +83,7 @@ export default function Settings() {
         </div>
 
         {/* Content */}
-        <div className="flex-1">
+        <div className="flex-1 min-w-0">
           {activeTab === 'general' && (
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 space-y-6">
               <h2 className="text-base font-bold">General Settings</h2>

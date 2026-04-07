@@ -94,7 +94,7 @@ export default function Courses() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="text-2xl font-bold text-gray-900" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Course Management</h1>
           <p className="text-gray-500 text-sm">Create and manage courses, modules, and content</p>
@@ -125,11 +125,11 @@ export default function Courses() {
         <div className="space-y-4">
           {courses.map(course => (
             <div key={course.id} className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-              <div className="flex items-stretch">
-                <div className="w-44 h-28 flex-shrink-0">
+              <div className="flex flex-col sm:flex-row items-stretch">
+                <div className="w-full h-44 sm:w-44 sm:h-auto shrink-0">
                   <img src={course.thumbnail || 'https://via.placeholder.com/200x150'} alt={course.title} className="w-full h-full object-cover" />
                 </div>
-                <div className="flex-1 p-5">
+                <div className="flex-1 p-4 sm:p-5">
                   <div className="flex items-start justify-between">
                     <div>
                       <div className="flex items-center gap-2 mb-1">
@@ -200,7 +200,8 @@ export default function Courses() {
 
       {activeTab === 'modules' && (
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-          <table className="w-full">
+          <div className="overflow-x-auto">
+          <table className="w-full min-w-140">
             <thead className="bg-gray-50">
               <tr>
                 {['Course', 'Module', 'Access', 'Submodules', 'Actions'].map(h => (
@@ -230,6 +231,7 @@ export default function Courses() {
               ))}
             </tbody>
           </table>
+          </div>
         </div>
       )}
 

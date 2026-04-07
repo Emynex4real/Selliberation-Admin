@@ -214,7 +214,27 @@ export default function Dashboard() {
             <h2 className="font-bold text-gray-900 text-sm">Recent Signups</h2>
             <Link to="/users" className="text-xs font-medium hover:underline" style={{ color: '#F5820A' }}>View All</Link>
           </div>
-          <table className="w-full">
+          {/* Mobile card layout */}
+          <div className="sm:hidden divide-y divide-gray-100">
+            {recentUsers.map((u, i) => (
+              <div key={i} className="p-4 flex items-center justify-between gap-3">
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-white shrink-0" style={{ background: '#0D2847' }}>
+                    {u.name.charAt(0)}
+                  </div>
+                  <div className="min-w-0">
+                    <p className="text-sm font-medium truncate">{u.name}</p>
+                    <p className="text-xs text-gray-400">{u.date}</p>
+                  </div>
+                </div>
+                <span className={`px-2 py-0.5 rounded-full text-xs font-medium shrink-0 ${u.status === 'active' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}`}>
+                  {u.status}
+                </span>
+              </div>
+            ))}
+          </div>
+          {/* Desktop table */}
+          <table className="hidden sm:table w-full">
             <thead className="bg-gray-50">
               <tr>
                 {['User', 'Date', 'Status'].map(h => (
@@ -253,7 +273,25 @@ export default function Dashboard() {
             <h2 className="font-bold text-gray-900 text-sm">Recent Payments</h2>
             <Link to="/commissions" className="text-xs font-medium hover:underline" style={{ color: '#F5820A' }}>View All</Link>
           </div>
-          <table className="w-full">
+          {/* Mobile card layout */}
+          <div className="sm:hidden divide-y divide-gray-100">
+            {recentPayments.map((p, i) => (
+              <div key={i} className="p-4 flex items-center justify-between gap-3">
+                <div className="min-w-0">
+                  <p className="text-sm font-medium truncate">{p.user}</p>
+                  <p className="text-xs text-gray-400">{p.date}</p>
+                </div>
+                <div className="flex items-center gap-2 shrink-0">
+                  <span className="text-sm font-bold" style={{ color: '#1CB957' }}>₦{p.amount.toLocaleString()}</span>
+                  <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-700 flex items-center gap-1">
+                    <Clock size={10} /> Success
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+          {/* Desktop table */}
+          <table className="hidden sm:table w-full">
             <thead className="bg-gray-50">
               <tr>
                 {['User', 'Amount', 'Date', 'Status'].map(h => (

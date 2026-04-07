@@ -135,18 +135,18 @@ export default function Announcements() {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-3 gap-3">
         {[
           { label: 'Total', value: announcements.length, icon: Megaphone, color: 'text-gray-700', bg: 'bg-gray-100' },
           { label: 'Sent', value: announcements.filter(a => a.status === 'sent').length, icon: Send, color: 'text-green-600', bg: 'bg-green-100' },
           { label: 'Drafts', value: announcements.filter(a => a.status === 'draft').length, icon: Save, color: 'text-yellow-600', bg: 'bg-yellow-100' },
         ].map((stat, i) => (
-          <div key={i} className="bg-white p-5 rounded-xl shadow-sm border border-gray-100 flex items-center gap-4">
-            <div className={`w-11 h-11 ${stat.bg} rounded-xl flex items-center justify-center shrink-0`}>
-              <stat.icon size={20} className={stat.color} />
+          <div key={i} className="bg-white rounded-xl shadow-sm border border-gray-100 flex flex-col sm:flex-row items-center sm:items-start gap-2 sm:gap-4 p-4 sm:p-5">
+            <div className={`w-10 h-10 sm:w-11 sm:h-11 ${stat.bg} rounded-xl flex items-center justify-center shrink-0`}>
+              <stat.icon size={18} className={stat.color} />
             </div>
-            <div>
-              <p className="text-2xl font-bold text-gray-900">{stat.value}</p>
+            <div className="text-center sm:text-left">
+              <p className="text-xl sm:text-2xl font-bold text-gray-900 leading-tight">{stat.value}</p>
               <p className="text-xs text-gray-500">{stat.label}</p>
             </div>
           </div>
