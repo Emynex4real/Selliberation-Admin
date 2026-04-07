@@ -12,7 +12,7 @@ const monthlyData = [
   { month: 'Feb', revenue: 14100000, users: 490, conversions: 389 },
   { month: 'Mar', revenue: 15600000, users: 560, conversions: 441 },
   { month: 'Apr', revenue: 16200000, users: 620, conversions: 510 },
-];
+];  
 
 const commissionByLevel = [
   { level: 'L1', amount: 1850000, count: 412 },
