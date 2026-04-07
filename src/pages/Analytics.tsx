@@ -82,7 +82,7 @@ export default function Analytics() {
             <YAxis yAxisId="left" tickFormatter={fmt} tick={{ fontSize: 10, fill: '#9ca3af' }} axisLine={false} tickLine={false} width={52} />
             <YAxis yAxisId="right" orientation="right" tick={{ fontSize: 10, fill: '#9ca3af' }} axisLine={false} tickLine={false} width={40} />
             <Tooltip
-              formatter={(val: number, name: string) => [name === 'revenue' ? `₦${val.toLocaleString()}` : val, name === 'revenue' ? 'Revenue' : 'New Users']}
+              formatter={(val, name) => [name === 'revenue' ? `₦${Number(val).toLocaleString()}` : val, name === 'revenue' ? 'Revenue' : 'New Users']}
               contentStyle={{ borderRadius: 10, border: '1px solid #e5e7eb', fontSize: 12 }}
             />
             <Legend iconType="circle" iconSize={8} wrapperStyle={{ fontSize: 12 }} />
@@ -110,7 +110,7 @@ export default function Analytics() {
               <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" />
               <XAxis dataKey="month" tick={{ fontSize: 11, fill: '#9ca3af' }} axisLine={false} tickLine={false} />
               <YAxis tick={{ fontSize: 10, fill: '#9ca3af' }} axisLine={false} tickLine={false} width={32} />
-              <Tooltip formatter={(val: number) => [val, 'Conversions']} contentStyle={{ borderRadius: 10, border: '1px solid #e5e7eb', fontSize: 12 }} />
+              <Tooltip formatter={(val) => [val, 'Conversions']} contentStyle={{ borderRadius: 10, border: '1px solid #e5e7eb', fontSize: 12 }} />
               <Area type="monotone" dataKey="conversions" stroke="#1CB957" strokeWidth={2.5} fill="url(#convGrad)" dot={{ fill: '#1CB957', r: 3 }} activeDot={{ r: 5 }} />
             </AreaChart>
           </ResponsiveContainer>
@@ -126,7 +126,7 @@ export default function Analytics() {
               <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" />
               <XAxis dataKey="level" tick={{ fontSize: 11, fill: '#9ca3af' }} axisLine={false} tickLine={false} />
               <YAxis tickFormatter={(v: number) => `₦${(v / 1000).toFixed(0)}k`} tick={{ fontSize: 10, fill: '#9ca3af' }} axisLine={false} tickLine={false} width={48} />
-              <Tooltip formatter={(val: number) => [`₦${val.toLocaleString()}`, 'Commissions']} contentStyle={{ borderRadius: 10, border: '1px solid #e5e7eb', fontSize: 12 }} />
+              <Tooltip formatter={(val) => [`₦${Number(val).toLocaleString()}`, 'Commissions']} contentStyle={{ borderRadius: 10, border: '1px solid #e5e7eb', fontSize: 12 }} />
               <Bar dataKey="amount" fill="#F5820A" radius={[4, 4, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>

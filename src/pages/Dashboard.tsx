@@ -129,7 +129,7 @@ export default function Dashboard() {
               <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" />
               <XAxis dataKey="month" tick={{ fontSize: 11, fill: '#9ca3af' }} axisLine={false} tickLine={false} />
               <YAxis tickFormatter={formatNaira} tick={{ fontSize: 10, fill: '#9ca3af' }} axisLine={false} tickLine={false} width={50} />
-              <Tooltip formatter={(val: number) => [`₦${val.toLocaleString()}`, 'Revenue']} contentStyle={{ borderRadius: 10, border: '1px solid #e5e7eb', fontSize: 12 }} />
+              <Tooltip formatter={(val) => [`₦${Number(val).toLocaleString()}`, 'Revenue']} contentStyle={{ borderRadius: 10, border: '1px solid #e5e7eb', fontSize: 12 }} />
               <Area type="monotone" dataKey="revenue" stroke="#F5820A" strokeWidth={2.5} fill="url(#revenueGrad)" dot={{ fill: '#F5820A', r: 3 }} activeDot={{ r: 5 }} />
             </AreaChart>
           </ResponsiveContainer>
@@ -145,7 +145,7 @@ export default function Dashboard() {
               <Pie data={subscriptionData} cx="50%" cy="50%" innerRadius={45} outerRadius={70} paddingAngle={3} dataKey="value">
                 {subscriptionData.map((entry, i) => <Cell key={i} fill={entry.color} />)}
               </Pie>
-              <Tooltip formatter={(val: number) => [val.toLocaleString(), '']} contentStyle={{ borderRadius: 8, fontSize: 12 }} />
+              <Tooltip formatter={(val) => [Number(val).toLocaleString(), '']} contentStyle={{ borderRadius: 8, fontSize: 12 }} />
             </PieChart>
           </ResponsiveContainer>
           <div className="space-y-2 mt-2">
@@ -180,7 +180,7 @@ export default function Dashboard() {
               <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" />
               <XAxis dataKey="month" tick={{ fontSize: 11, fill: '#9ca3af' }} axisLine={false} tickLine={false} />
               <YAxis tick={{ fontSize: 10, fill: '#9ca3af' }} axisLine={false} tickLine={false} width={30} />
-              <Tooltip formatter={(val: number) => [val, 'New Users']} contentStyle={{ borderRadius: 10, border: '1px solid #e5e7eb', fontSize: 12 }} />
+              <Tooltip formatter={(val) => [val, 'New Users']} contentStyle={{ borderRadius: 10, border: '1px solid #e5e7eb', fontSize: 12 }} />
               <Area type="monotone" dataKey="users" stroke="#0D2847" strokeWidth={2.5} fill="url(#userGrad)" dot={{ fill: '#0D2847', r: 3 }} activeDot={{ r: 5 }} />
             </AreaChart>
           </ResponsiveContainer>
@@ -196,7 +196,7 @@ export default function Dashboard() {
               <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" />
               <XAxis dataKey="level" tick={{ fontSize: 11, fill: '#9ca3af' }} axisLine={false} tickLine={false} />
               <YAxis tickFormatter={(v: number) => `₦${(v / 1000).toFixed(0)}k`} tick={{ fontSize: 10, fill: '#9ca3af' }} axisLine={false} tickLine={false} width={46} />
-              <Tooltip formatter={(val: number) => [`₦${val.toLocaleString()}`, 'Commissions']} contentStyle={{ borderRadius: 10, border: '1px solid #e5e7eb', fontSize: 12 }} />
+              <Tooltip formatter={(val) => [`₦${Number(val).toLocaleString()}`, 'Commissions']} contentStyle={{ borderRadius: 10, border: '1px solid #e5e7eb', fontSize: 12 }} />
               <Bar dataKey="amount" radius={[4, 4, 0, 0]}>
                 {commissionData.map((_, i) => (
                   <Cell key={i} fill={i === 0 ? '#F5820A' : i === 1 ? '#0D2847' : '#94a3b8'} />
